@@ -13,15 +13,13 @@ export default function Header({ cartItems, onCartClick }: HeaderProps) {
   const dropdownTimeout = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleWhatsAppRedirect = () => {
-    const url =
-      'https://wa.me/5511958697612?text=Olá! Gostaria de falar com a LMS Tabacaria.';
+    const url = 'https://wa.me/5511958697612?text=Olá! Gostaria de falar com a LMS Tabacaria.';
     window.open(url, '_blank');
   };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Busca por:', searchQuery);
-    // Redirecione ou filtre produtos aqui
   };
 
   const handleDropdownEnter = () => {
@@ -32,7 +30,7 @@ export default function Header({ cartItems, onCartClick }: HeaderProps) {
   const handleDropdownLeave = () => {
     dropdownTimeout.current = setTimeout(() => {
       setIsDropdownOpen(false);
-    }, 300); // Delay de 300ms no fechamento
+    }, 300);
   };
 
   return (
@@ -57,7 +55,7 @@ export default function Header({ cartItems, onCartClick }: HeaderProps) {
             </div>
           </a>
 
-          {/* Barra de Pesquisa com ícone */}
+          {/* Barra de Pesquisa */}
           <form
             onSubmit={handleSearch}
             className="hidden md:flex items-center gap-2 max-w-xl mx-auto flex-grow"
@@ -79,12 +77,7 @@ export default function Header({ cartItems, onCartClick }: HeaderProps) {
 
           {/* Navegação Desktop */}
           <nav className="hidden md:flex space-x-8 items-center ml-auto">
-            <a
-              href="#home"
-              className="hover:text-blue-400 transition-colors"
-            >
-              Início
-            </a>
+            <a href="#home" className="hover:text-blue-400 transition-colors">Início</a>
 
             {/* Dropdown de Produtos */}
             <div
@@ -101,34 +94,13 @@ export default function Header({ cartItems, onCartClick }: HeaderProps) {
                   onMouseEnter={handleDropdownEnter}
                   onMouseLeave={handleDropdownLeave}
                 >
-                  <a
-                    href="#pods"
-                    className="block px-4 py-2 hover:bg-slate-100"
-                  >
-                    Pods
-                  </a>
-                  <a
-                    href="#essencias"
-                    className="block px-4 py-2 hover:bg-slate-100"
-                  >
-                    Essências
-                  </a>
-                  <a
-                    href="#acessorios"
-                    className="block px-4 py-2 hover:bg-slate-100"
-                  >
-                    Acessórios
-                  </a>
+                  <a href="#pods" className="block px-4 py-2 hover:bg-slate-100">Pods</a>
+                  <a href="#essencias" className="block px-4 py-2 hover:bg-slate-100">Essências</a>
+                  <a href="#acessorios" className="block px-4 py-2 hover:bg-slate-100">Acessórios</a>
                 </div>
               )}
             </div>
 
-            <a
-              href="#about"
-              className="hover:text-blue-400 transition-colors"
-            >
-              Sobre
-            </a>
             <button
               onClick={handleWhatsAppRedirect}
               className="hover:text-blue-400 transition-colors"
@@ -138,14 +110,15 @@ export default function Header({ cartItems, onCartClick }: HeaderProps) {
           </nav>
 
           {/* Ícones do canto direito */}
-          <div className="flex items-center space-x-4 hover:text-blue-400 transition-colors relative">
+          <div className="flex items-center space-x-4 hover:text-blue-400 transition-colors">
+            {/* Carrinho com badge fixado corretamente */}
             <button
               onClick={onCartClick}
-              className="py-2 px-3"
+              className="relative py-2 px-3"
             >
               <ShoppingCart className="w-6 h-6" />
               {cartItems > 0 && (
-                <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute top-0 right-1 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center translate-x-1/2 -translate-y-1/2 mt-2">
                   {cartItems}
                 </span>
               )}
@@ -169,24 +142,9 @@ export default function Header({ cartItems, onCartClick }: HeaderProps) {
         {isMenuOpen && (
           <nav className="md:hidden mt-4 pb-4 border-t border-slate-700 pt-4">
             <div className="flex flex-col space-y-3">
-              <a
-                href="#home"
-                className="hover:text-blue-400 transition-colors"
-              >
-                Início
-              </a>
-              <a
-                href="#products"
-                className="hover:text-blue-400 transition-colors"
-              >
-                Produtos
-              </a>
-              <a
-                href="#about"
-                className="hover:text-blue-400 transition-colors"
-              >
-                Sobre
-              </a>
+              <a href="#home" className="hover:text-blue-400 transition-colors">Início</a>
+              <a href="#nossos-produtos" className="hover:text-blue-400 transition-colors">Produtos</a>
+              <a href="#about" className="hover:text-blue-400 transition-colors">Sobre</a>
               <button
                 onClick={handleWhatsAppRedirect}
                 className="hover:text-blue-400 transition-colors text-left"
