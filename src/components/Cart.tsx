@@ -3,6 +3,8 @@ import type { Product } from './ProductCard';
 
 interface CartItem extends Product {
   quantity: number;
+  flavorOptions: string[];
+  flavor: string;
 }
 
 interface CartProps {
@@ -11,7 +13,7 @@ interface CartProps {
   items: CartItem[];
   onUpdateQuantity: (id: number, quantity: number) => void;
   onRemoveItem: (id: number) => void;
-  onCheckout: () => void;
+  onUpdateFlavor: (id: number, newFlavor: string) => void;
 }
 
 export default function Cart({
@@ -20,11 +22,13 @@ export default function Cart({
   items,
   onUpdateQuantity,
   onRemoveItem,
+  onUpdateFlavor,
 }: CartProps) {
-  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const whatsappNumber = '5511933367780'; // Substitua pelo seu número real do WhatsApp
+  const whatsappNumber = '5511933367780';
 
   if (!isOpen) return null;
+
+  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const handleCheckout = () => {
     const message = encodeURIComponent(
@@ -80,16 +84,38 @@ export default function Cart({
                       />
                       <div className="flex-1">
                         <h3 className="font-semibold text-slate-800 mb-1">{item.name}</h3>
-                        <p className="text-sm text-slate-600 mb-2">{item.flavor}</p>
+
+                        {/* Dropdown de sabores */}
+                        {item.flavorOptions && item.flavorOptions.length > 1 ? (
+                          <select
+                            value={item.flavor}
+                            onChange={(e) => onUpdateFlavor(item.id, e.target.value)}
+                            className="text-sm text-slate-600 mb-2 bg-white border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring focus:ring-blue-200"
+                          >
+                            {item.flavorOptions.map((option) => (
+                              <option key={option} value={option}>
+                                {option}
+                              </option>
+                            ))}
+                          </select>
+                        ) : (
+                          <p className="text-sm text-slate-600 mb-2">{item.flavor}</p>
+                        )}
+
                         <div className="flex items-center justify-between">
                           <span className="font-bold text-slate-800">
                             R$ {(item.price * item.quantity).toFixed(2)}
                           </span>
                           <div className="flex items-center space-x-3">
                             <button
-                              onClick={() =>
-                                onUpdateQuantity(item.id, Math.max(1, item.quantity - 1))
-                              }
+                              onClick={() => {
+                                const newQuantity = item.quantity - 1;
+                                if (newQuantity <= 0) {
+                                  onRemoveItem(item.id);
+                                } else {
+                                  onUpdateQuantity(item.id, newQuantity);
+                                }
+                              }}
                               className="p-1 hover:bg-slate-200 rounded transition-colors"
                             >
                               <Minus className="w-4 h-4" />

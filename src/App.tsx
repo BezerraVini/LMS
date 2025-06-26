@@ -5,19 +5,17 @@ import Footer from './components/Footer';
 import Hero from './components/Hero';
 import ProductCatalog from './components/ProductCatalog';
 import WhatsAppButton from './components/WhatsAppButton';
-import type { Product } from './components/ProductCard';
+import type { Product } from './components/ProductTypes';
 
-// Definindo o tipo CartItem que inclui a quantidade e o sabor
 type CartItem = Product & {
   quantity: number;
-  flavor: string;  // Garantindo que 'flavor' seja obrigatória para os itens no carrinho
+  flavor: string;
 };
 
 function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  // Função para adicionar um produto ao carrinho, agora recebe o sabor selecionado
   const handleAddToCart = (product: Product, selectedFlavor: string) => {
     setCartItems(prev => {
       const exists = prev.find(item => item.id === product.id && item.flavor === selectedFlavor);
@@ -33,6 +31,26 @@ function App() {
     });
   };
 
+  const handleUpdateQuantity = (id: number, quantity: number) => {
+    setCartItems(prev =>
+      prev.map(item =>
+        item.id === id ? { ...item, quantity } : item
+      )
+    );
+  };
+
+  const handleRemoveItem = (id: number) => {
+    setCartItems(prev => prev.filter(item => item.id !== id));
+  };
+
+  const handleUpdateFlavor = (id: number, newFlavor: string) => {
+    setCartItems(prev =>
+      prev.map(item =>
+        item.id === id ? { ...item, flavor: newFlavor } : item
+      )
+    );
+  };
+
   return (
     <>
       <Header
@@ -42,33 +60,15 @@ function App() {
 
       <Hero />
 
-      {/* Passando a função handleAddToCart para o ProductCatalog */}
       <ProductCatalog onAddToCart={handleAddToCart} />
 
       <Cart
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
         items={cartItems}
-        onUpdateQuantity={(id, qty) =>
-          setCartItems(prev =>
-            prev.map(item =>
-              item.id === id ? { ...item, quantity: qty } : item
-            )
-          )
-        }
-        onRemoveItem={(id) =>
-          setCartItems(prev => prev.filter(item => item.id !== id))
-        }
-        onCheckout={() => {
-          const message = encodeURIComponent(
-            'Olá, gostaria de finalizar o pedido:\n\n' +
-              cartItems.map(item =>
-                `• ${item.name} (${item.flavor}) x${item.quantity} = R$ ${(item.price * item.quantity).toFixed(2)}`
-              ).join('\n') +
-              `\n\nTotal: R$ ${cartItems.reduce((t, i) => t + i.price * i.quantity, 0).toFixed(2)}`
-          );
-          window.open(`https://wa.me/55SEUNUMEROAQUI?text=${message}`, '_blank');
-        }}
+        onUpdateQuantity={handleUpdateQuantity}
+        onRemoveItem={handleRemoveItem}
+        onUpdateFlavor={handleUpdateFlavor}
       />
 
       <Footer />

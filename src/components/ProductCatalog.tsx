@@ -2,6 +2,7 @@ import { Plus } from 'lucide-react';
 import { useState } from 'react';
 
 
+
 // Definindo a interface Product com 'flavor' como obrigatório
 export interface Product {
   id: number;
