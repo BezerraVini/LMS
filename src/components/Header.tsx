@@ -144,7 +144,7 @@ export default function Header({ cartItems, onCartClick }: HeaderProps) {
             <div className="flex flex-col space-y-3">
               <a href="#home" className="hover:text-blue-400 transition-colors">Início</a>
               <a href="#nossos-produtos" className="hover:text-blue-400 transition-colors">Produtos</a>
-              <a href="#about" className="hover:text-blue-400 transition-colors">Sobre</a>
+             {/*  <a href="#about" className="hover:text-blue-400 transition-colors">Sobre</a> */}
               <button
                 onClick={handleWhatsAppRedirect}
                 className="hover:text-blue-400 transition-colors text-left"
