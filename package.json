@@ -1,12 +1,12 @@
 {
   "name": "lms",
   "version": "0.0.0",
+   "homepage": "https://BezerraVini.github.io/LMS",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "gh-pages -d dist",
-    "homepage": "https://BezerraVini.github.io/LMS"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "lucide-react": "^0.517.0",
